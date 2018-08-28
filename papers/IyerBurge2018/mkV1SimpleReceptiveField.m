@@ -33,7 +33,7 @@ phse     = 0 * pi;
 
 %% MAKE GAUSSIAN RECEPTIVE FIELD (RF range)
 
-[gaussian, gaussGrid] = mkCenterSurroundFilter(sigma, 0, 1, filterSR, 'on');
+[gaussian, gaussGrid] = mkCenterSurroundFilter_mismatched(sigma, 0, 1, filterSR, 'on');
 
 %% MAKE ORIENTED GRATING
 
@@ -53,8 +53,13 @@ f_gabor = fftshift2(abs(fft2(gabor)));
 
 %f = [0 : length(baseline_tRange)-1]./(length(baseline_tRange)/1000);
 
-f_axis  = gaussGrid ./filterSR;
+f_axis     = ((0 : 1 : length(gaussGrid) - 1)/length(gaussGrid)-0.5)/filterSR;
+%f_axis     = gaussGrid ./filterSR;
 [F_X, F_Y] = meshgrid(f_axis, f_axis);
+
+%% COMPUTE ORIENTATION AND FREQUENCY BANDWIDTH
+
+
 
 %% VISUALIZE FILTERS
 
@@ -66,9 +71,11 @@ f_axis  = gaussGrid ./filterSR;
 % spectrum at half-height
 
 figure (1), clf
-subplot(2, 3, 1), imagesc(gaussGrid, gaussGrid, gaussian), colorbar, title('Gaussian'), ylabel('deg.')
-subplot(2, 3, 2), imagesc(gaussGrid, gaussGrid, grating), colorbar, title('oriented grating'), ylabel('deg.')
-subplot(2, 3, 4), imagesc(gaussGrid, gaussGrid, gabor), colorbar, title('gabor'), ylabel('deg.')
-subplot(2, 3, 5), imagesc(f_axis, f_axis, f_gabor),  caxis([0, 1]), colorbar, xlim([-30, 30]), ylim([-30, 30]), title('gabor (frequency domain)'), ylabel('cyc/deg.')
-subplot(2, 3, 6), surf(F_X, F_Y, f_gabor), xlim([-30, 30]), ylim([-30, 30]), title('gabor (frequency domain)'), xlabel('cyc/deg.')
+subplot(3, 3, 1), imagesc(gaussGrid, gaussGrid, gaussian), colorbar, title('Gaussian'), ylabel('deg.')
+subplot(3, 3, 2), imagesc(gaussGrid, gaussGrid, grating), colorbar, title('oriented grating'), ylabel('deg.')
+subplot(3, 3, 3), imagesc(gaussGrid, gaussGrid, gabor), colorbar, title('gabor'), ylabel('deg.')
+subplot(3, 3, 4), imagesc(f_axis, f_axis, f_gabor),  caxis([0, 1]), colorbar, xlim([-30, 30]), title('gabor (frequency domain)'), ylabel('cyc/deg.'), ylim([-30, 30]),
+subplot(3, 3, 5), surf(F_X, F_Y, f_gabor),  title('gabor (frequency domain)'), xlabel('cyc/deg.'), xlim([-30, 30]), ylim([-30, 30]),
 
+
+%subplot(3, 3, 7), plot()
