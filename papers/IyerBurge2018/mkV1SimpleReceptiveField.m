@@ -51,8 +51,7 @@ gabor = gaussian .* grating;
 gabor   = gabor - mean(gabor(:));
 f_gabor = fftshift2(abs(fft2(gabor)));
 
-%f = [0 : length(baseline_tRange)-1]./(length(baseline_tRange)/1000);
-
+%f = [0 : length(baseline_tRange)-1]./(length(baseline_tRange)/1000);c
 f_axis     = ((0 : 1 : length(gaussGrid) - 1)/length(gaussGrid)-0.5)/filterSR;
 %f_axis     = gaussGrid ./filterSR;
 [F_X, F_Y] = meshgrid(f_axis, f_axis);
